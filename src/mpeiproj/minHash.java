@@ -40,13 +40,13 @@ public class minHash {
 
 		}
 		printMinHash();
-
 	}
 
 	public void printMinHash() {
 		int len = this.minHash.size();
-		for (int i = 0; i < len; i++) {
-			for (int j = 0; j < this.totalHashes; j++) {
+		for (int j = 0; j < this.totalHashes; j++) {
+
+			for (int i = 0; i < len; i++) {
 				System.out.printf("%d ", this.minHash.get(i).get(j));
 			}	
 			System.out.println("");
