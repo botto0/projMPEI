@@ -25,10 +25,20 @@ public class BloomFilter {
 	// insert element in bf
 	public boolean insert(String elem) {
 		int pos;
+		boolean isInBF=false;
 
 		for (int i = 1; i <= k; i++) {
 			pos = hashFunct(elem,i) % (BloomFilter.length);
-			BloomFilter[pos] = 1;
+			if(BloomFilter[pos]==1) {
+				isInBF = true;
+			}
+			else{
+				BloomFilter[pos] = 1;
+			}
+		}
+		if(isInBF) {
+			System.out.println(elem+" already exists in bloom filter");
+			return false;
 		}
 		return true;
 	}

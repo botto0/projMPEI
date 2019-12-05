@@ -6,48 +6,52 @@ import java.util.ArrayList;
 import java.util.Scanner;
 
 public class Shingles {
-
+	public static int numFiles;
+	
 	public static void main(String[] args) throws FileNotFoundException {
+		minHash mh = new minHash(100);
 
-		ArrayList<String> ds = new ArrayList<String>();
-		Scanner sc = new Scanner(new File("/Users/botto/Desktop/ds/file0.txt"));
-		sc.useDelimiter("[\\shingle\\t\\n.,:';?!*{}=+&/()”“\"-_]+");		
-		/*String x = "";
-		int count=0;
+		String dirname;
+		System.out.println("Que dataset quer utilizar? ");
+		Scanner scan = new Scanner(System.in);
+		dirname=scan.nextLine();
+		scan.close();
 
-		while (sc.hasNext()) {
-			x = sc.next();
-			if (count % 10 != 0) {
-				shingle = shingle + x;
+		if(dirname.contentEquals("equal")) {
+			numFiles=2;
+		}
+		else {
+			numFiles=100;
+		}
+
+		for (int i = 0; i < numFiles; i++) {
+			ArrayList<String> ds = new ArrayList<String>();
+
+			String fname= "/Users/botto/Desktop/"+dirname+"/file" + i + ".txt";
+			Scanner sc = new Scanner(new File(fname));
+			sc.useDelimiter("[\\s\\t\\n”“\\\".,:;-]");	
+
+			String shingle = "";
+
+			int count = 1;
+			while (sc.hasNext()) {
+				if((count % 10) != 0) {
+					shingle += sc.next();
+					count = count +1;
+				}
+				else {
+					ds.add(shingle);
+					count = 1;
+					shingle = "";
+				}
 			}
-			count++;
 			ds.add(shingle);
-			shingle="";
+			sc.close();		
+			mh.addMinHash(ds);
 		}
-		if (shingle.length()!=0) {
-			ds.add(shingle);
-		}
-		sc.close();
-		System.out.println(ds);*/
+		mh.printMinHash();
 
-		int count = 1;
-		String shingle = "";
-		
-		while (sc.hasNext()) {
-			System.out.println(count);
-			if((count % 10) != 0) {
-				shingle += sc.next();
-				count = count +1;
-			}
-			else {
-				ds.add(shingle);
-				count = 1;
-				shingle = "";
-			}
-		}
-		sc.close();
-		System.out.println(ds);
-		minHash mh = new minHash(ds,100);
+
 	}
 }
 

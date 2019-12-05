@@ -2,33 +2,28 @@ package mpeiproj;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import mpeiproj.Shingles;
 
 public class minHash {
-	private ArrayList<ArrayList<Integer>> minHash;
-	private ArrayList<String> ds;
+	private ArrayList<ArrayList<Integer>> matrix = new ArrayList<ArrayList<Integer>>();
+	private  ArrayList<String> ds;
 	private double totalHashes;
-	private int prime = 31; // prime num for hash functions 
+	private UHASH hashFunct = new UHASH();
 
-	public minHash(ArrayList<String> ds, int totalHashes) {
-		this.ds = ds;
-		this.totalHashes = totalHashes;
-		initMinHash(ds);
+	public minHash(int t) {
+		this.totalHashes=t;
 	}
 
-	private void initMinHash( ArrayList<String> ds) {
+	public void addMinHash(ArrayList<String> ds) {
+		ArrayList<Integer> a = new ArrayList<Integer>();
 
-		this.minHash = new ArrayList<>();
-		ArrayList<Integer> a=new ArrayList<Integer>();
-		this.minHash.add(a);
 		int[] h = new int[ds.size()];
 		int min;
 
-		for (int j = 1; j <= this.totalHashes; j++) {
 
+		for (int j = 0; j < this.totalHashes; j++) {
 			for (int i = 0; i < ds.size(); i++) {
-
-				h[i] = hashFunct(ds.get(i), j);
-
+				h[i] = hashFunct.hash(ds.get(i).hashCode(), j);
 			}
 			min = Integer.MAX_VALUE;
 			for (int i : h) {
@@ -36,29 +31,49 @@ public class minHash {
 					min = i;
 				}
 			}
-			this.minHash.get(0).add(min);
+			a.add(min);
 
-		}
-		printMinHash();
+		}		
+		this.matrix.add(a);
+
 	}
 
 	public void printMinHash() {
-		int len = this.minHash.size();
+		int len = this.matrix.size();
+		int count=0;
 		for (int j = 0; j < this.totalHashes; j++) {
 
 			for (int i = 0; i < len; i++) {
-				System.out.printf("%d ", this.minHash.get(i).get(j));
-			}	
-			System.out.println("");
+				System.out.printf("%d      ", this.matrix.get(i).get(j));
+			}
+			System.out.println();
 		}
-	}
-	private int hashFunct(String s, int k) {
-		int h = 0;
-		for (int i = 0; i < s.length(); i++)
-		{
-			h += k * (((int) s.charAt(i)) % this.prime) % (this.ds.size());
-		}
-		return h;
-	}
 
+		int c =0;
+
+		for (int x =0; x<Shingles.numFiles-1 ; x++) {
+			for (int y =x+1; y<Shingles.numFiles ; y++) {
+				for (int k =0; k<100 ; k++) {
+					if (this.matrix.get(x).get(k).intValue() == this.matrix.get(y).get(k).intValue()) {
+						c++;
+					}
+				}
+				
+				if(c/100.0 >=0.8) {
+					System.out.println("SIMILAR FILES!");
+					System.out.println("file"+x);
+					System.out.println("file"+y);
+					System.out.println();
+				}
+				System.out.printf("%s ", c/100.0);
+				c = 0;
+			}
+		}
+		
+
+	}
 }
+
+
+
+

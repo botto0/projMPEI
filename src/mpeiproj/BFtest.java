@@ -25,11 +25,11 @@ public class BFtest {
 		BloomFilter bf = new BloomFilter(n,p);
 		String in;
 		bf.init();
-		for (int i = 0; i< n; i++) {
+		for (int i = 0; i< 50000; i++) {
 			in = "file" + i + ".txt";
 			bf.insert(in);
 		}
-		
+		bf.insert("file0.txt");
 		long finish = System.nanoTime();
 		long timeElapsed = finish - start;
 		System.out.printf("Bloom Filter Insert Time: %f\n",timeElapsed*Math.pow(10, -9));
